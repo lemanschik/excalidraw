@@ -47,6 +47,8 @@ const ExcalidrawBase = (props: ExcalidrawProps) => {
 
   const canvasActions = props.UIOptions?.canvasActions;
 
+  // FIXME normalize/set defaults in parent component so that the memo resolver
+  // compares the same values
   const UIOptions: AppProps["UIOptions"] = {
     ...props.UIOptions,
     canvasActions: {
