@@ -25,6 +25,8 @@ import {
   Excalidraw,
   defaultLang,
   LiveCollaborationTrigger,
+  Sidebar,
+  Footer,
 } from "../packages/excalidraw/index";
 import {
   AppState,
@@ -84,6 +86,7 @@ import { AppWelcomeScreen } from "./components/AppWelcomeScreen";
 import { AppFooter } from "./components/AppFooter";
 
 import "./index.scss";
+import { DefaultSidebar } from "../components/DefaultSidebar";
 
 polyfill();
 
@@ -232,6 +235,56 @@ export const langCodeAtom = atom(
   Array.isArray(currentLangCode) ? currentLangCode[0] : currentLangCode,
 );
 
+const CustomSidebar = ({
+  excalidrawAPI,
+}: {
+  excalidrawAPI?: ExcalidrawImperativeAPI | null;
+}) => {
+  return (
+    <>
+      <DefaultSidebar.Trigger>ola!</DefaultSidebar.Trigger>
+      <DefaultSidebar>
+        <Sidebar.Tab value="two">
+          {" "}
+          <Sidebar.Header>custom tab 2</Sidebar.Header> Custom content
+        </Sidebar.Tab>
+        <Sidebar.TabTriggers>
+          <Sidebar.TabTrigger value="library">Library</Sidebar.TabTrigger>
+          <Sidebar.TabTrigger value="two">Custom</Sidebar.TabTrigger>
+        </Sidebar.TabTriggers>
+      </DefaultSidebar>
+      <Sidebar name="custom">
+        <Sidebar.Tabs defaultTab="one">
+          <Sidebar.Tab value="one">
+            <Sidebar.Header>custom tab 1</Sidebar.Header>
+            One content
+          </Sidebar.Tab>
+          <Sidebar.Tab value="two">
+            <Sidebar.Header>custom tab 2</Sidebar.Header>
+            Two content
+          </Sidebar.Tab>
+          <Sidebar.TabTriggers>
+            <Sidebar.TabTrigger value="one">One</Sidebar.TabTrigger>
+            <Sidebar.TabTrigger value="two">Two</Sidebar.TabTrigger>
+          </Sidebar.TabTriggers>
+        </Sidebar.Tabs>
+      </Sidebar>
+      <Sidebar name="custom2" ref={ref}>
+        <Sidebar.Header>Custom 2 sidebar</Sidebar.Header>
+        <Sidebar.Tabs defaultTab="one">
+          <h2>Custom 2</h2>
+
+          <Sidebar.Tab value="one">One content</Sidebar.Tab>
+          <Sidebar.Tab value="two">Two content</Sidebar.Tab>
+          <Sidebar.TabTriggers>
+            <Sidebar.TabTrigger value="one">One</Sidebar.TabTrigger>
+            <Sidebar.TabTrigger value="two">Two</Sidebar.TabTrigger>
+          </Sidebar.TabTriggers>
+        </Sidebar.Tabs>
+      </Sidebar>
+    </>
+  );
+};
 const ExcalidrawWrapper = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [langCode, setLangCode] = useAtom(langCodeAtom);
@@ -662,7 +715,25 @@ const ExcalidrawWrapper = () => {
           isCollaborating={isCollaborating}
         />
         <AppWelcomeScreen setCollabDialogShown={setCollabDialogShown} />
-        <AppFooter />
+        <Footer>
+          <div style={{ display: "flex", marginRight: "auto" }}>
+            <button
+              onClick={() => {
+                excalidrawAPI?.toggleSidebar({ name: "custom" });
+              }}
+            >
+              custom sidebar 1
+            </button>
+            <button
+              onClick={() => {
+                excalidrawAPI?.toggleSidebar({ name: "custom2" });
+              }}
+            >
+              custom sidebar 2
+            </button>
+          </div>
+        </Footer>
+        <CustomSidebar excalidrawAPI={excalidrawAPI} />
         {isCollaborating && isOffline && (
           <div className="collab-offline-warning">
             {t("alerts.collabOfflineWarning")}
