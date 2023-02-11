@@ -92,15 +92,6 @@ export const SidebarInner = forwardRef(
     }: SidebarProps,
     ref: React.ForwardedRef<HTMLDivElement>,
   ) => {
-    // console.log(">>>", name);
-
-    useEffect(() => {
-      console.log(`MOUNT ${name}`);
-      return () => {
-        console.log(`UNMOUNT ${name}`);
-      };
-    }, [name]);
-
     const setHostSidebarCounters = useSetAtom(
       hostSidebarCountersAtom,
       jotaiScope,
